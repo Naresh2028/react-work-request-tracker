@@ -28,3 +28,19 @@ https://github.com/Naresh2028/work-request-tracker
 
 ```bash
 git clone https://github.com/Naresh2028/react-work-request-tracker.git
+```
+
+
+2. Update the API URL in `ClientService.ts` and `WorkRequestService.ts` to match your backend URL.
+
+3. Install the required packages:
+
+   ```bash
+   npm install
+   ```
+
+4. Run the application:
+
+   ```bash
+   npm run dev
+   ```
