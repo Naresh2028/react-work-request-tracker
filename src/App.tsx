@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route ,Link} from "react-router-dom";
 import "./App.css";
 import ClientPage from "./components/Client/ClientPage";
 import WorkRequesList from "./components/WorkRequest/WorkRequestList";
@@ -9,32 +9,26 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <nav>
+        <Link to="/clients">Clients</Link> |{" "}
+        <Link to="/workRequests">Work Requests</Link> |{" "}
+        <Link to="/workRequests/create">Create Work Request</Link>
+      </nav>
+
         <Routes>
-          <Route 
-                path="/"
-                element={<ClientPage/>}>
+          <Route path="/" element={<ClientPage />}></Route>
 
-          </Route>
+          <Route path="/workRequests" element={<WorkRequesList />}></Route>
 
           <Route
-                path="/workRequests"
-                element={<WorkRequesList/>}>
-
-          </Route>
-          
-          <Route
-                path="/workRequests/create"
-                element={<WorkRequestCreate/>}>
-
-          </Route>
+            path="/workRequests/create"
+            element={<WorkRequestCreate />}
+          ></Route>
 
           <Route
-                path="/workRequests/:id"
-                element={<WorkRequestDetails/>}>
-                  
-          </Route>
-
-
+            path="/workRequests/:id"
+            element={<WorkRequestDetails />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>

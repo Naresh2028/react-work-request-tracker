@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Client, CreateClientRequest } from "../models/client";
 
-const API_URL = "https://localhost:7231/api/Client";
+const API_URL = "https://localhost:7156/api/Client";
 
 const getClients = async (): Promise<Client[]> => {
   const response = await axios.get<Client[]>(API_URL);
