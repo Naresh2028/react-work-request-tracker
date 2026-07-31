@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Client } from "../../models/client";
+import type { Client } from "../../models/Client";
 import ClientService from "../../services/ClientService";
 import WorkRequestService from "../../services/WorkRequestService";
 import type { CreateWorkRequest } from "../../models/WorkRequest";
@@ -84,8 +84,9 @@ function WorkRequestCreate() {
         value={status}
         onChange={(e) => setStatus(Number(e.target.value))}
       >
-        <option value={1}>Open</option>
-        <option value={2}>Progress</option>
+        <option value={0}>New</option>
+        <option value={1}>In Progress</option>
+        <option value={2}>Blocked</option>
         <option value={3}>Completed</option>
       </select>
 
