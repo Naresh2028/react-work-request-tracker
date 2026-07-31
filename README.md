@@ -24,7 +24,7 @@ https://github.com/Naresh2028/work-request-tracker
 
 ## Steps to Run
 
-### 1. Clone the repository
+1. Clone the repository
 
 ```bash
 git clone https://github.com/Naresh2028/react-work-request-tracker.git
