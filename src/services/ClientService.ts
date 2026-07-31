@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Client, CreateClientRequest } from "../models/client";
+import type { Client, CreateClientRequest } from "../models/Client";
 
 const API_URL = "https://localhost:7156/api/Client";
 
