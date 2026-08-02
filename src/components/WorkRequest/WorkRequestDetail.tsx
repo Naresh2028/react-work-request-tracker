@@ -3,50 +3,106 @@ import { useParams } from "react-router-dom";
 
 import type { WorkRequest } from "../../models/WorkRequest";
 import WorkRequestService from "../../services/WorkRequestService";
-import { Status } from "../../Constants/Status";
-import { Priority } from "../../Constants/Priority";
+import { Status } from "../../constants/Status";
+import { Priority } from "../../constants/Priority";
 
 function WorkRequestDetails() {
   const { id } = useParams();
 
   const [workRequest, setWorkRequest] = useState<WorkRequest | null>(null);
-
   const [status, setStatus] = useState(1);
-
   const [note, setNote] = useState("");
 
+  // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  //Error validation
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const loadWorkRequest = async () => {
-    const data = await WorkRequestService.getWorkRequestsById(Number(id));
-
-    setWorkRequest(data);
-
-    setStatus(data.status);
+    setHasError(false);
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      const data = await WorkRequestService.getWorkRequestsById(Number(id));
+      setWorkRequest(data);
+      setStatus(data.status);
+    } catch (error) {
+      console.error(error);
+      setWorkRequest(null);
+      setHasError(true);
+      setErrorMessage("Unable to laod Work Request");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     loadWorkRequest();
-  }, []);
+  }, [id]);
 
   const updateStatus = async () => {
-    await WorkRequestService.updateStatus(Number(id), {
-      status,
-    });
+      try {
+      await WorkRequestService.updateStatus(Number(id), {
+        status,
+      });
 
-    await loadWorkRequest();
+      await loadWorkRequest();
+    } catch (error) {
+      console.error(error);
+      setWorkRequest(null);
+      setHasError(true);
+      setErrorMessage("Unable to laod Work Request");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Add Note Feature
   const addNote = async () => {
-    await WorkRequestService.addNotes(Number(id), {
-      description: note,
-    });
+     try {
+      await WorkRequestService.addNotes(Number(id), {
+        description: note,
+      });
 
-    setNote("");
-
-    await loadWorkRequest();
+      setNote("");
+      await loadWorkRequest();
+    } catch (error) {
+      console.error(error);
+      setWorkRequest(null);
+      setHasError(true);
+      setErrorMessage("Unable to laod Work Request");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (!workRequest) return <h2>Loading...</h2>;
+  // Loading Option
+  if (isLoading) {
+    return (
+      <div className="text-center p-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+
+        <h5 className="mt-3">Loading work requests...</h5>
+      </div>
+    );
+  }
+
+  //Error Message
+  if (hasError) {
+    return (
+      <div className="alert alert-danger">
+        <h5>Unable to load work request</h5>
+
+        <p>{errorMessage}</p>
+      </div>
+    );
+  }
+
+  if (!workRequest) return <h2>No Work Request Found</h2>;
 
   return (
     <>
@@ -84,7 +140,8 @@ function WorkRequestDetails() {
 
       <h3>Update Status</h3>
 
-      <select className="form-select"
+      <select
+        className="form-select"
         value={status}
         onChange={(e) => setStatus(Number(e.target.value))}
       >
@@ -94,18 +151,22 @@ function WorkRequestDetails() {
         <option value={3}>Completed</option>
       </select>
 
-      <button className="btn btn-primary" onClick={updateStatus}>Update Status</button>
+      <button className="btn btn-primary" onClick={updateStatus}>
+        Update Status
+      </button>
 
       <h3>Notes</h3>
 
       <textarea
-      className="form-control"
+        className="form-control"
         value={note}
         onChange={(e) => setNote(e.target.value)}
         placeholder="Enter note..."
       />
 
-      <button className="btn btn-primary" onClick={addNote}>Add Note</button>
+      <button className="btn btn-primary" onClick={addNote}>
+        Add Note
+      </button>
 
       <h3>Existing Notes</h3>
 

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import type { WorkRequest, WorkRequestQuery } from "../../models/WorkRequest";
 import WorkRequestService from "../../services/WorkRequestService";
-import { Priority } from "../../Constants/Priority";
-import { Status } from "../../Constants/Status";
+import { Priority } from "../../constants/Priority";
+import { Status } from "../../constants/Status";
 import { useNavigate } from "react-router-dom";
 
 function WorkRequesList() {
+  // API Call
   const [workRequests, setWorkRequest] = useState<WorkRequest[]>([]);
 
   //Search
@@ -16,27 +17,46 @@ function WorkRequesList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const pageSize = 5;
+  const totalPages = Math.ceil(totalItems / pageSize);
 
   const navigate = useNavigate();
 
-  const totalPages = Math.ceil(totalItems / pageSize);
+  // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  //Error validation
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loadWorkRequest = useCallback(async () => {
-    const params: WorkRequestQuery = {
-      pageNumber,
-      pageSize,
-      search: search,
-      status: status === "" ? undefined : status,
-    };
+    setHasError(false);
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      const params: WorkRequestQuery = {
+        pageNumber,
+        pageSize,
+        search: search,
+        status: status === "" ? undefined : status,
+      };
 
-    const data = await WorkRequestService.getWorkRequests(params);
+      const data = await WorkRequestService.getWorkRequests(params);
 
-    setWorkRequest(data.items);
-    setTotalItems(data.totalItems);
-  }, [pageNumber, status, search]);
+      setWorkRequest(data.items);
+      setTotalItems(data.totalItems);
+    } catch (error) {
+      console.error(error);
+      setWorkRequest([]);
+      setTotalItems(0);
+      setHasError(true);
+      setErrorMessage("Unable to laod Work Request");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [pageNumber, status, pageSize, search]);
 
   const handleSearch = () => {
-    if (pageNumber == 1) {
+    if (pageNumber !== 1) {
       setPageNumber(1);
     } else {
       loadWorkRequest();
@@ -47,85 +67,134 @@ function WorkRequesList() {
     loadWorkRequest();
   }, [loadWorkRequest]);
 
+  // Loading Option
+  if (isLoading) {
+    return (
+      <div className="text-center p-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+
+        <h5 className="mt-3">Loading work requests...</h5>
+      </div>
+    );
+  }
+
+  //Error Message
+  if (hasError) {
+    return (
+      <div className="alert alert-danger">
+        <h5>Unable to load work requests</h5>
+
+        <p>{errorMessage}</p>
+
+        <button className="btn btn-primary" onClick={loadWorkRequest}>
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
-      <input className="form-control"
-        type="text"
-        placeholder="Enter title..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      {/* Search option */}
+      <div className="row mb-3">
+        <div className="col-md-4">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Enter title..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
 
-      <select className="form-select"
-        value={status}
-        onChange={(e) =>
-          setStatus(e.target.value === "" ? "" : Number(e.target.value))
-        }
-      >
-        <option value="">All</option>
-        <option value="0">New</option>
-        <option value="1">In Progress</option>
-        <option value="2">Blocked</option>
-        <option value="3">Completed</option>
-      </select>
+          <select
+            className="form-select"
+            value={status}
+            onChange={(e) =>
+              setStatus(e.target.value === "" ? "" : Number(e.target.value))
+            }
+          >
+            <option value="">All</option>
+            <option value="0">New</option>
+            <option value="1">In Progress</option>
+            <option value="2">Blocked</option>
+            <option value="3">Completed</option>
+          </select>
 
-      <button className="btn btn-primary" onClick={handleSearch}>
-        Search
-      </button>
+          <button className="btn btn-primary" onClick={handleSearch}>
+            Search
+          </button>
+        </div>
+      </div>
 
       <div className="container mt-4">
         <h1>Work Request Lists</h1>
 
-        <table className="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Client</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Due Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        {/* Table Content */}
 
-          <tbody>
-            {workRequests.map((workRequest) => (
-              <tr key={workRequest.workRequestId}>
-                <td>{workRequest.title}</td>
-                <td>{workRequest.clientName}</td>
-                <td>{Priority[workRequest.priority]}</td>
-                <td>{Status[workRequest.status]}</td>
-                <td>{workRequest.dueDate}</td>
-                <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() =>
-                      navigate(`/workRequests/${workRequest.workRequestId}`)
-                    }
-                  >
-                    View
-                  </button>
-                </td>
+        {workRequests.length === 0 ? (
+          <div className="alert alert-info">No work requests found.</div>
+        ) : (
+          <table className="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {workRequests.map((workRequest) => (
+                <tr key={workRequest.workRequestId}>
+                  <td>{workRequest.title}</td>
+                  <td>{workRequest.clientName}</td>
+                  <td>{Priority[workRequest.priority]}</td>
+                  <td>{Status[workRequest.status]}</td>
+                  <td>{workRequest.dueDate}</td>
+                  <td>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() =>
+                        navigate(`/workRequests/${workRequest.workRequestId}`)
+                      }
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {/* Pagination */}
+        <div className="d-flex justify-content-center align-items-center mt-3">
+          <button
+            className="btn btn-primary rounded-pill px-4"
+            onClick={() => setPageNumber(pageNumber - 1)}
+            disabled={pageNumber == 1}
+          >
+            Previous
+          </button>
+
+          <span style={{ margin: "0 10px" }}>
+            Page {pageNumber} of {totalPages}
+          </span>
+
+          <button
+            className="btn btn-primary rounded-pill px-4"
+            onClick={() => setPageNumber(pageNumber + 1)}
+            disabled={pageNumber === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <button
-        onClick={() => setPageNumber(pageNumber - 1)}
-        disabled={pageNumber == 1}
-      >
-        Previous
-      </button>
-      <span style={{ margin: "0 10px" }}>
-        Page {pageNumber} of {totalPages}
-      </span>
-      <button
-        onClick={() => setPageNumber(pageNumber + 1)}
-        disabled={pageNumber === totalPages}
-      >
-        Next
-      </button>
     </>
   );
 }

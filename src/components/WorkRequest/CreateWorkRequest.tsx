@@ -13,15 +13,33 @@ function WorkRequestCreate() {
   const [dueDate, setDueDate] = useState("");
   const [clientId, setClientId] = useState(0);
 
+  // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  //Error validation
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   //Navigation
   const navigate = useNavigate();
 
   const [clients, setClients] = useState<Client[]>([]);
 
   const loadClients = async () => {
-    const data = await ClientService.getClients();
+    setHasError(false);
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      const data = await ClientService.getClients();
 
-    setClients(data);
+      setClients(data);
+    } catch (error) {
+      console.error(error);
+      setHasError(true);
+      setErrorMessage("Unable to laod client Request");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -29,30 +47,61 @@ function WorkRequestCreate() {
   }, []);
 
   const createWorkRequest = async () => {
-    const request: CreateWorkRequest = {
-      title,
+    setHasError(false);
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      const request: CreateWorkRequest = {
+        title,
 
-      description,
+        description,
 
-      priority,
+        priority,
 
-      status,
+        status,
 
-      dueDate,
+        dueDate,
 
-      clientId,
-    };
+        clientId,
+      };
 
-    await WorkRequestService.createWorkRequest(request);
+      await WorkRequestService.createWorkRequest(request);
 
-    navigate("/workRequests");
+      navigate("/workRequests");
+    } catch (error) {
+      console.error(error);
+      setHasError(true);
+      setErrorMessage("Unable to laod create Request");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // Loading Option
+  if (isLoading) {
+    return (
+      <div className="text-center p-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+
+        <h5 className="mt-3">Loading, Please wait ...</h5>
+      </div>
+    );
+  }
 
   return (
     <>
-    <h2>Create Work Request</h2>
+      <h2>Create Work Request</h2>
+      {hasError && (
+        <div className="alert alert-danger">
+          <strong>Error:</strong> {errorMessage}
+        </div>
+      )}
+
       {/* Work Request Form */}
-      <input className="form-control"
+      <input
+        className="form-control"
         type="text"
         placeholder="Title"
         value={title}
@@ -61,7 +110,8 @@ function WorkRequestCreate() {
 
       <br />
 
-      <textarea className="form-control"
+      <textarea
+        className="form-control"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -81,7 +131,8 @@ function WorkRequestCreate() {
 
       <br />
 
-      <select className="form-select"
+      <select
+        className="form-select"
         value={status}
         onChange={(e) => setStatus(Number(e.target.value))}
       >
@@ -93,7 +144,8 @@ function WorkRequestCreate() {
 
       <br />
 
-      <input className="form-select"
+      <input
+        className="form-select"
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
@@ -118,10 +170,9 @@ function WorkRequestCreate() {
 
       <br />
 
-      <button className="btn btn-primary" onClick={createWorkRequest}>Create</button>
-
-
-      
+      <button className="btn btn-primary" onClick={createWorkRequest}>
+        Create
+      </button>
     </>
   );
 }

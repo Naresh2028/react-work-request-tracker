@@ -2,14 +2,9 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="container mt-4">
-      <div className="text-center">
-        <h1 className="display-4 fw-bold">Work Request Tracker</h1>
-
-        <p className="lead">
-          Manage clients, work requests, status updates, and notes in a modern
-          full-stack application.
-        </p>
+    <div>
+      <div>
+        <h2 className="display-4">Work Request Tracker System</h2>
 
         <Link to="/workRequests" className="btn btn-primary btn-lg">
           Explore Work Requests
@@ -32,18 +27,39 @@ function Home() {
             modern React development.
           </p>
 
-          <h4 className="mt-4">Current Features</h4>
+         
+          <div className="card shadow-sm border-0 my-4">
+            <div className="card-body">
+              <h3 className="mb-4">Project Overview</h3>
 
-          <ul>
-            <li>Create and manage Clients</li>
-            <li>Create Work Requests</li>
-            <li>Search Work Requests</li>
-            <li>Filter by Status</li>
-            <li>Pagination</li>
-            <li>Update Work Request Status</li>
-            <li>Add Notes to Work Requests</li>
-            <li>View Work Request Details</li>
-          </ul>
+              <h5 className="mb-3">Features</h5>
+
+              <ul className="list-group mb-4">
+                <li className="list-group-item">Create Clients.</li>
+
+                <li className="list-group-item">
+                  Create, edit, and update the status of Work Requests.
+                </li>
+
+                <li className="list-group-item">
+                  Add multiple Notes to a Work Request to track progress and
+                  communication.
+                </li>
+              </ul>
+
+              <h5 className="mb-3">Relationships</h5>
+
+              <ul className="list-group">
+                <li className="list-group-item">
+                  One Client can have multiple Work Requests (One-to-Many).
+                </li>
+
+                <li className="list-group-item">
+                  One Work Request can have multiple Notes (One-to-Many).
+                </li>
+              </ul>
+            </div>
+          </div>
 
           <div className="row mt-5">
             <div className="col-md-3">
@@ -81,7 +97,7 @@ function Home() {
             </div>
 
             <div className="col-md-3">
-              <h5 className="text-primary">FEATURES</h5>
+              <h5 className="text-primary">FUNCTIONALITY</h5>
 
               <p>
                 CRUD Operations
@@ -118,6 +134,8 @@ function Home() {
               Backend Repository
             </a>
           </div>
+
+           
         </div>
       </div>
     </div>
