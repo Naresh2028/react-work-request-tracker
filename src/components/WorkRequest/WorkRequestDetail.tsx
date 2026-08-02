@@ -84,7 +84,7 @@ function WorkRequestDetails() {
 
       <h3>Update Status</h3>
 
-      <select
+      <select className="form-select"
         value={status}
         onChange={(e) => setStatus(Number(e.target.value))}
       >
@@ -94,17 +94,18 @@ function WorkRequestDetails() {
         <option value={3}>Completed</option>
       </select>
 
-      <button onClick={updateStatus}>Update Status</button>
+      <button className="btn btn-primary" onClick={updateStatus}>Update Status</button>
 
       <h3>Notes</h3>
 
       <textarea
+      className="form-control"
         value={note}
         onChange={(e) => setNote(e.target.value)}
         placeholder="Enter note..."
       />
 
-      <button onClick={addNote}>Add Note</button>
+      <button className="btn btn-primary" onClick={addNote}>Add Note</button>
 
       <h3>Existing Notes</h3>
 

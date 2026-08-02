@@ -31,3 +31,8 @@ export interface WorkRequestQuery {
   search: string;
   status?: number;
 }
+
+export interface PagedResponse<T> {
+  items:T[],
+  totalItems:number
+}

@@ -52,7 +52,7 @@ function WorkRequestCreate() {
     <>
     <h2>Create Work Request</h2>
       {/* Work Request Form */}
-      <input
+      <input className="form-control"
         type="text"
         placeholder="Title"
         value={title}
@@ -61,7 +61,7 @@ function WorkRequestCreate() {
 
       <br />
 
-      <textarea
+      <textarea className="form-control"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -70,6 +70,7 @@ function WorkRequestCreate() {
       <br />
 
       <select
+        className="form-select"
         value={priority}
         onChange={(e) => setPriority(Number(e.target.value))}
       >
@@ -80,7 +81,7 @@ function WorkRequestCreate() {
 
       <br />
 
-      <select
+      <select className="form-select"
         value={status}
         onChange={(e) => setStatus(Number(e.target.value))}
       >
@@ -92,7 +93,7 @@ function WorkRequestCreate() {
 
       <br />
 
-      <input
+      <input className="form-select"
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
@@ -102,6 +103,7 @@ function WorkRequestCreate() {
 
       {/* Client Dropdown */}
       <select
+        className="form-select"
         value={clientId}
         onChange={(e) => setClientId(Number(e.target.value))}
       >
@@ -116,7 +118,7 @@ function WorkRequestCreate() {
 
       <br />
 
-      <button onClick={createWorkRequest}>Create</button>
+      <button className="btn btn-primary" onClick={createWorkRequest}>Create</button>
 
 
       

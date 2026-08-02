@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ClientService from "../../services/ClientService";
-import type { Client } from "../../models/client";
+import type { Client } from "../../models/Client";
 
 function ClientPage() {
   const [clientName, setClientName] = useState("");
@@ -37,12 +37,13 @@ function ClientPage() {
       <h3>Creat Client</h3>
 
       <input
+      className="form-control"
         type="text"
         value={clientName}
         onChange={(e) => setClientName(e.target.value)}
       />
 
-      <button onClick={createClient}>Create</button>
+      <button className="btn btn-primary"  onClick={createClient}>Create</button>
 
       <hr />
 

@@ -4,13 +4,14 @@ import type {
   CreateWorkRequest,
   UpdateStatusRequest,
   WorkRequestQuery,
+  PagedResponse
 } from "../models/WorkRequest";
 import type { CreateNoteRequest, Note } from "../models/Note";
 
-const API_URL = "https://localhost:7156/api/WorkRequest";
+const API_URL = "https://localhost:7231/api/WorkRequest";
 
-const getWorkRequests = async (params:WorkRequestQuery): Promise<WorkRequest[]> => {
-  const response = await axios.get<WorkRequest[]>(`${API_URL}`,{params});
+const getWorkRequests = async (params:WorkRequestQuery): Promise<PagedResponse<WorkRequest>> => {
+  const response = await axios.get<PagedResponse<WorkRequest>>(`${API_URL}`,{params});
   return response.data;
 };
 
