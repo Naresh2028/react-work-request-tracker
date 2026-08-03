@@ -5,7 +5,7 @@ import WorkRequestCreate from "./components/workRequest/createWorkRequest";
 import WorkRequestDetails from "./components/workRequest/workRequestDetail";
 import Navigation from "./components/navigation";
 import Home from "./components/home/home";
-import ClientPage from "./components/client/ClientPage";
+import ClientPage from "./components/client/clientPage";
 
 function App() {
   return (
