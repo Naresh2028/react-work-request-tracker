@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import type { Client } from "../../models/Client";
-import ClientService from "../../services/ClientService";
-import WorkRequestService from "../../services/WorkRequestService";
-import type { CreateWorkRequest } from "../../models/WorkRequest";
+import type { Client } from "../../models/client";
+import ClientService from "../../services/clientService";
+import WorkRequestService from "../../services/workRequestService";
+import type { CreateWorkRequest } from "../../models/workRequest";
 import { useNavigate } from "react-router-dom";
 
 function WorkRequestCreate() {

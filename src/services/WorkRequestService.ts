@@ -5,8 +5,8 @@ import type {
   UpdateStatusRequest,
   WorkRequestQuery,
   PagedResponse
-} from "../models/WorkRequest";
-import type { CreateNoteRequest, Note } from "../models/Note";
+} from "../models/workRequest";
+import type { CreateNoteRequest, Note } from "../models/note";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/WorkRequest`;
 

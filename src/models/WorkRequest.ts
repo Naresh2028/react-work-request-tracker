@@ -1,4 +1,4 @@
-import type { Note } from "./Note";
+import type { Note } from "./note";
 
 export interface WorkRequest {
   workRequestId: number;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Client, CreateClientRequest } from "../models/Client";
+import type { Client, CreateClientRequest } from "../models/client";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/Client`;
 

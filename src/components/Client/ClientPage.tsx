@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ClientService from "../../services/ClientService";
-import type { Client } from "../../models/Client";
+import ClientService from "../../services/clientService";
+import type { Client } from "../../models/client";
 
 function ClientPage() {
   const [clientName, setClientName] = useState("");

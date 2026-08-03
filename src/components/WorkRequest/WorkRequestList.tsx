@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import type { WorkRequest, WorkRequestQuery } from "../../models/WorkRequest";
-import WorkRequestService from "../../services/WorkRequestService";
-import { Priority } from "../../constants/Priority";
-import { Status } from "../../constants/Status";
+import type { WorkRequest, WorkRequestQuery } from "../../models/workRequest";
+import WorkRequestService from "../../services/workRequestService";
+import { Priority } from "../../constants/priority";
+import { Status } from "../../constants/status";
 import { useNavigate } from "react-router-dom";
 
 function WorkRequesList() {

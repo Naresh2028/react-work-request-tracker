@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import type { WorkRequest } from "../../models/WorkRequest";
-import WorkRequestService from "../../services/WorkRequestService";
-import { Status } from "../../constants/Status";
-import { Priority } from "../../constants/Priority";
+import type { WorkRequest } from "../../models/workRequest";
+import WorkRequestService from "../../services/workRequestService";
+import { Status } from "../../constants/status";
+import { Priority } from "../../constants/priority";
 
 function WorkRequestDetails() {
   const { id } = useParams();

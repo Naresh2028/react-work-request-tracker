@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ClientPage from "./components/Client/ClientPage";
-import WorkRequesList from "./components/WorkRequest/WorkRequestList";
-import WorkRequestCreate from "./components/WorkRequest/CreateWorkRequest";
-import WorkRequestDetails from "./components/WorkRequest/WorkRequestDetail";
-import Navigation from "./components/Navigation";
-import Home from "./components/Home/Home";
+
+import WorkRequesList from "./components/workRequest/workRequestList";
+import WorkRequestCreate from "./components/workRequest/createWorkRequest";
+import WorkRequestDetails from "./components/workRequest/workRequestDetail";
+import Navigation from "./components/navigation";
+import Home from "./components/home/home";
+import ClientPage from "./components/client/ClientPage";
 
 function App() {
   return (
